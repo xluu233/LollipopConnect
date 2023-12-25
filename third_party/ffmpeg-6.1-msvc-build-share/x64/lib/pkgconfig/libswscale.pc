@@ -1,0 +1,14 @@
+prefix=/c/Users/xlu/Desktop/ffmpeg-build/ffmpeg-6.1-msvc-build/x64/ffmpeg
+exec_prefix=${prefix}
+libdir=/c/Users/xlu/Desktop/ffmpeg-build/ffmpeg-6.1-msvc-build/x64/ffmpeg/lib
+includedir=/c/Users/xlu/Desktop/ffmpeg-build/ffmpeg-6.1-msvc-build/x64/ffmpeg/include
+
+Name: libswscale
+Description: FFmpeg image rescaling library
+Version: 7.5.100
+Requires: 
+Requires.private: libavutil >= 58.29.100
+Conflicts:
+Libs: -L${libdir}  -lswscale 
+Libs.private: 
+Cflags: -I${includedir}

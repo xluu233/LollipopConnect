@@ -1,5 +1,4 @@
-
-.idea/qmlSettings.xml
+.idea
 # 默认忽略的文件
 /shelf/
 /workspace.xml
@@ -8,5 +7,7 @@
 # Datasource local storage ignored files
 /dataSources/
 /dataSources.local.xml
+/cmake-build-debug
 /cmake-build-debug-mingw_qt6
-.idea/
+/cmake-build-debug-visual-studio-2022
+

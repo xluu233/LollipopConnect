@@ -1,0 +1,14 @@
+prefix=/c/Users/xlu/Desktop/ffmpeg-build/ffmpeg-6.1-msvc-build/x64/ffmpeg
+exec_prefix=${prefix}
+libdir=/c/Users/xlu/Desktop/ffmpeg-build/ffmpeg-6.1-msvc-build/x64/ffmpeg/lib
+includedir=/c/Users/xlu/Desktop/ffmpeg-build/ffmpeg-6.1-msvc-build/x64/ffmpeg/include
+
+Name: libavcodec
+Description: FFmpeg codec library
+Version: 60.31.102
+Requires: 
+Requires.private: libswresample >= 4.12.100, libavutil >= 58.29.100
+Conflicts:
+Libs: -L${libdir}  -lavcodec 
+Libs.private: mfuuid.lib ole32.lib strmiids.lib ole32.lib user32.lib
+Cflags: -I${includedir}

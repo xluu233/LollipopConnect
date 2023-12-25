@@ -1,0 +1,14 @@
+prefix=/c/Users/xlu/Desktop/ffmpeg-build/ffmpeg-6.1-msvc-build/x64/ffmpeg
+exec_prefix=${prefix}
+libdir=/c/Users/xlu/Desktop/ffmpeg-build/ffmpeg-6.1-msvc-build/x64/ffmpeg/lib
+includedir=/c/Users/xlu/Desktop/ffmpeg-build/ffmpeg-6.1-msvc-build/x64/ffmpeg/include
+
+Name: libavutil
+Description: FFmpeg utility library
+Version: 58.29.100
+Requires: 
+Requires.private: 
+Conflicts:
+Libs: -L${libdir}  -lavutil 
+Libs.private: user32.lib bcrypt.lib
+Cflags: -I${includedir}
