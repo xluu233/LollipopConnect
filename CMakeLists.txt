@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.20)
 
-set(PROJECT_NAME "LConnect")
+set(PROJECT_NAME "LollipopConnect")
 project(${PROJECT_NAME} VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_AUTOMOC ON)
@@ -17,6 +17,12 @@ else()
 endif()
 message(STATUS "[${PROJECT_NAME}] BUILD_CPU_ARCH:${BUILD_CPU_ARCH}")
 
+set(PROJECT_DIRECTORY ${CMAKE_CURRENT_LIST_DIR})
+
+#这里在Clion中需要配置
+set(CMAKE_PREFIX_PATH "C:/App/Qt/Qt6/6.4.3/msvc2019_64")
+#set(Qt_DIR "C:/App/Qt/Qt6/6.4.3/msvc2019_64/lib/cmake")
+
 
 #导入Qt相关依赖包
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core Gui Widgets Multimedia Quick Svg Network )
@@ -31,9 +37,34 @@ message(STATUS "[${PROJECT_NAME}] Qt version: ${QT_VERSION}   QT_VERSION_MAJOR: 
 #include_directories(${PROJECT_SOURCE_DIR}/language)
 #link_directories(${PROJECT_SOURCE_DIR}/res)
 
-qt_add_executable(${PROJECT_NAME}
-        src/main.cpp
+set(UTIL_SOURCE
+    src/log/Log.h
+    src/log/Log.cpp
+    src/util/singleton.h
+    src/util/SettingsHelper.h
+    src/util/SettingsHelper.cpp
 )
+source_group(util FILES ${UTIL_SOURCE})
+
+set(COMPONENT_SOURCE
+    src/component/CircularReveal.cpp
+    src/component/CircularReveal.h
+    src/component/FileWatcher.cpp
+    src/component/FileWatcher.h
+    src/component/FpsItem.cpp
+    src/component/FpsItem.h
+        src/component/stdafx.h
+)
+source_group(component FILES ${COMPONENT_SOURCE})
+
+# all sources
+set(QC_PROJECT_SOURCES
+    src/main.cpp
+    ${UTIL_SOURCE}
+    ${COMPONENT_SOURCE}
+)
+
+qt_add_executable(${PROJECT_NAME} ${QC_PROJECT_SOURCES})
 
 
 if(QT_VERSION VERSION_GREATER_EQUAL "6.2")
@@ -79,8 +110,38 @@ if(QT_VERSION VERSION_GREATER_EQUAL "6.2")
             FILES ${shaders_files}
     )
 
+
+
+
+
 else()
     message(${PROJECT_NAME} "  add resource error!! qt version must >= 6.2")
+endif()
+
+
+#
+# fluent_ui
+#
+if(QT_VERSION VERSION_GREATER_EQUAL "6.2")
+    # windows
+    if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+        # 这里以动态库的方式引入
+        set(FluentUI_LibPath "${CMAKE_CURRENT_SOURCE_DIR}/third_party/FluentUI/windows")
+        #set(FluentUI_LibPath "C:/App/Qt/Qt6/6.4.3/msvc2019_64/qml/FluentUI")
+        target_link_directories(${PROJECT_NAME} PUBLIC ${FluentUI_LibPath})
+        message("FluentUI lib: " ${FluentUI_LibPath})
+        #debug模式：fluentuiplugind   release模式：fluentuiplugin
+        target_link_libraries(${PROJECT_NAME} PRIVATE fluentuiplugind)
+    endif()
+
+    # MacOS
+    if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+    endif()
+
+    # Linux
+    if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+    endif()
+
 endif()
 
 
@@ -131,16 +192,17 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 
 #        COMMAND ${CMAKE_COMMAND} -E copy_if_different "${THIRD_PARTY_PATH}/scrcpy-server" "${QSC_DEPLOY_PATH}"
 #    )
+
 endif()
 
 
-set_target_properties(${PROJECT_NAME} PROPERTIES
-        MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com
-        MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
-        MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
-        MACOSX_BUNDLE TRUE
-        WIN32_EXECUTABLE TRUE
-)
+#set_target_properties(${PROJECT_NAME} PROPERTIES
+#        MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com
+#        MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
+#        MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
+#        MACOSX_BUNDLE TRUE
+#        WIN32_EXECUTABLE TRUE
+#)
 
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
